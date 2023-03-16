@@ -22,9 +22,10 @@ spec:
     kind: Rollout
     name: rollout-bluegreen
   targetCPUUtilizationPercentage: 10
-  ignoreSelector:
-    matchLabels:
-      hpa-ignore: "true"
+  selector:
+    matchExpressions:
+      - {key: "hpa-ignore", operator: "DoesNotExist"}
+
 
 
 
