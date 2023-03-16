@@ -1,37 +1,37 @@
-# apiVersion: autoscaling/v1
-# kind: HorizontalPodAutoscaler
-# metadata:
-#   name: hpa-rollout-example
-# spec:
-#   maxReplicas: 6
-#   minReplicas: 2
-#   scaleTargetRef:
-#     apiVersion: argoproj.io/v1alpha1
-#     kind: Rollout
-#     name: rollout-bluegreen
-#   targetCPUUtilizationPercentage: 10
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: rollout-bluegreen-hpa
+  name: hpa-rollout-example
 spec:
+  maxReplicas: 6
+  minReplicas: 2
   scaleTargetRef:
-    apiVersion: apps/v1
+    apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: rollout-bluegreen
-  minReplicas: 2
-  maxReplicas: 6
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 10
-  selector:
-    matchLabels:
-      app: rollout-bluegreen
-      hpa-ignore: "false"
+  targetCPUUtilizationPercentage: 10
+# apiVersion: autoscaling/v2beta2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: rollout-bluegreen-hpa
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Rollout
+#     name: rollout-bluegreen
+#   minReplicas: 2
+#   maxReplicas: 6
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       target:
+#         type: Utilization
+#         averageUtilization: 10
+#   selector:
+#     matchLabels:
+#       app: rollout-bluegreen
+#       hpa-ignore: "false"
 
 
 
