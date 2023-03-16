@@ -8,3 +8,4 @@ resources:
   - deployment.yaml
   - active-service.yaml
   - preview-service.yaml
+  - hpa.yaml
