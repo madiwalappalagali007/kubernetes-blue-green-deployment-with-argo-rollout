@@ -1,3 +1,30 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: rollout-bluegreen
+# spec:
+#   destination:
+#     namespace: default
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     repoURL: https://github.com/madiwalappalagali007/kubernetes-blue-green-deployment-with-argo-rollout.git
+#     targetRevision: HEAD
+#     path: base
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - RespectIgnoreDifferences=true
+#     ignoreDifferences:
+#       - group: argoproj.io
+#         kind: Rollout
+#         jsonPointers:
+#           - /spec/replicas
+
+#2
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -18,8 +45,16 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
-    ignoreDifferences:
-      - group: argoproj.io
-        kind: Rollout
-        jsonPointers:
-          - /spec/replicas
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Rollout
+      jsonPointers:
+        - /spec/replicas
+  healthChecks:
+    - type: podScheduled
+    - type: containerHealthy
+      containerName: rollouts-demo
+      httpGet:
+        path: /healthz
+        port: 8080
+
