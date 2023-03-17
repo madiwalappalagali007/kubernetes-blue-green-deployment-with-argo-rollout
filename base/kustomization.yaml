@@ -10,4 +10,4 @@ resources:
   - preview-service.yaml
   - hpa.yaml
   - application.yaml
-  - deployment-patch.yaml
+ 
