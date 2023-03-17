@@ -58,6 +58,32 @@
 #         path: /healthz
 #         port: 8080
 #3
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: rollout-bluegreen
+# spec:
+#   destination:
+#     namespace: default
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     repoURL: https://github.com/madiwalappalagali007/kubernetes-blue-green-deployment-with-argo-rollout.git
+#     targetRevision: HEAD
+#     path: base
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - RespectIgnoreDifferences=true
+#   ignoreDifferences:
+#     - group: argoproj.io
+#       kind: Rollout
+#       jsonPointers:
+#         - /spec/replicas
+#4444444444444444444444444444
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -77,10 +103,21 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - RespectIgnoreDifferences=true
+      - RespectSyncOnlyAnnotations=true
   ignoreDifferences:
     - group: argoproj.io
       kind: Rollout
       jsonPointers:
         - /spec/replicas
+        - /spec/strategy/blueGreen/activeService
+        - /spec/strategy/blueGreen/previewService
+        - /spec/strategy/blueGreen/autoPromotionEnabled
+    - group: apps
+      kind: ReplicaSet
+      jsonPointers:
+        - /spec/replicas
+        - /spec/template/spec/containers/0/image
+        - /spec/template/spec/containers/0/imagePullPolicy
+        - /spec/template/spec/containers/0/ports
+
 
