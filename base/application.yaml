@@ -1,26 +1,49 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: rollout-bluegreen
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: default
+#     server: https://kubernetes.default.svc
+#   project: default
+#   source:
+#     path: kubernetes-blue-green-deployment-with-argo-rollout/base
+#     repoURL: https://github.com/madiwalappalagali007/kubernetes-blue-green-deployment-with-argo-rollout.git
+#     targetRevision: HEAD
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - RespectIgnoreDifferences=true
+#   ignoreDifferences:
+#     - group: apps
+#       kind: Deployment
+#       jsonPointers:
+#         - /spec/replicas
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rollout-bluegreen
-  namespace: argocd
+  namespace: default
 spec:
   destination:
     namespace: default
     server: https://kubernetes.default.svc
-  project: default
+  project: rollout-bluegreen
   source:
-    path: kubernetes-blue-green-deployment-with-argo-rollout/base
     repoURL: https://github.com/madiwalappalagali007/kubernetes-blue-green-deployment-with-argo-rollout.git
     targetRevision: HEAD
+    path: base
+    helm:
+      values: values.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-      - RespectIgnoreDifferences=true
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/replicas
+    - CreateNamespace=true
+
