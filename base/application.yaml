@@ -136,6 +136,12 @@ spec:
     path: kubernetes-blue-green-deployment-with-argo-rollout/base
     repoURL: https://github.com/madiwalappalagali007/kubernetes-blue-green-deployment-with-argo-rollout.git
     targetRevision: HEAD
+    ignoreDifferences:
+    - group: argoproj.io
+      kind: Rollout
+      jsonPointers:
+        - /spec/template/spec/containers/0/image
+        - /spec/strategy/blueGreen/autoPromotionEnabled
   syncPolicy:
     automated:
       prune: true
@@ -143,12 +149,12 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - RespectIgnoreDifferences=true
-  ignoreDifferences:
-    - group: argoproj.io
-      kind: Rollout
-      jsonPointers:
-        - /spec/template/spec/containers/0/image
-        - /spec/strategy/blueGreen/autoPromotionEnabled
+#   ignoreDifferences:
+#     - group: argoproj.io
+#       kind: Rollout
+#       jsonPointers:
+#         - /spec/template/spec/containers/0/image
+#         - /spec/strategy/blueGreen/autoPromotionEnabled
 
 
 
