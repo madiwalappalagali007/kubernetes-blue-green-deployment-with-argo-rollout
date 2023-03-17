@@ -1,3 +1,4 @@
+#1
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
 # metadata:
@@ -24,26 +25,54 @@
 #       kind: Deployment
 #       jsonPointers:
 #         - /spec/replicas
+#2
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: rollout-bluegreen
+#   namespace: default
+# spec:
+#   destination:
+#     namespace: default
+#     server: https://kubernetes.default.svc
+#   project: rollout-bluegreen
+#   source:
+#     repoURL: https://github.com/madiwalappalagali007/kubernetes-blue-green-deployment-with-argo-rollout.git
+#     targetRevision: HEAD
+#     path: base
+#     helm:
+#       values: values.yaml
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#     - CreateNamespace=true
+#3
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rollout-bluegreen
-  namespace: default
 spec:
   destination:
     namespace: default
     server: https://kubernetes.default.svc
-  project: rollout-bluegreen
+  project: default
   source:
     repoURL: https://github.com/madiwalappalagali007/kubernetes-blue-green-deployment-with-argo-rollout.git
     targetRevision: HEAD
     path: base
-    helm:
-      values: values.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+    ignoreDifferences:
+      - group: apps
+        kind: Deployment
+        jsonPointers:
+          - /spec/template/spec/containers/0/image
+
 
