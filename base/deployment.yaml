@@ -44,8 +44,9 @@ spec:
       containers:
       - name: rollouts-demo
         #image: argoproj/rollouts-demo:blue
-        image: argoproj/rollouts-demo:green
+       # image: argoproj/rollouts-demo:green
         #image: argoproj/rollouts-demo:yellow
+        image: jemesbond/angular:v1
         imagePullPolicy: Always
         resources:
           requests:
