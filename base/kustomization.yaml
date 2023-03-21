@@ -9,6 +9,6 @@ resources:
   - active-service.yaml
   - preview-service.yaml
   - hpa.yaml
-  - application.yaml
+
  
  
